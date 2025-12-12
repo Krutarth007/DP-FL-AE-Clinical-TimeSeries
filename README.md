@@ -137,12 +137,11 @@ All experiment outputs are saved in the `results/` directory.
 
 | File | Description |
 |------|-------------|
-| metrics_summary.csv | RMSE, MAE, and performance ratios for all models |
-| multi_model_rmse_comparison.png | Centralized vs FL vs DP-FL RMSE comparison |
+| multi_model_rmse_comparison.png | Bar chart comparing Centralized vs FL vs DP-FL RMSE. |
 | performance_ratio_plot.png | Utility degradation ratios across architectures |
 | fl_convergence_plot.png | Global federated loss vs rounds |
-| conv1d_sequence_reconstruction.png | Example reconstruction from the best model |
-| Additional per-model reconstructions | Generated automatically |
+| conv1d_sequence_reconstruction.png | Qualitative reconstruction plot from the best $\text{DP-FL}$ model (Conv1D-AE) |
+| conv1d_residual_distribution.png | Histogram showing the distribution of reconstruction errors (residuals) |
 
 ---
 
