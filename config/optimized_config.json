@@ -1,0 +1,26 @@
+{
+  "MODEL_CONFIG": {
+    "latent_dim": 32,
+    "conv_layers": 3,
+    "lstm_units": 64,
+    "transformer_heads": 4,
+    "transformer_units": 64
+  },
+  "TRAINING_CONFIG": {
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "local_epochs": 5,
+    "global_rounds": 50,
+    "validation_split": 0.2
+  },
+  "DIFFERENTIAL_PRIVACY_CONFIG": {
+    "dp_enabled": true,
+    "dp_sigma": 1.0,
+    "dp_clipping_norm": 1.0,
+    "dp_delta": 1e-5
+  },
+  "FL_CONFIG": {
+    "fraction_fit": 1.0,
+    "fraction_eval": 1.0
+  }
+}
