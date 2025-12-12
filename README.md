@@ -1,110 +1,128 @@
 # DP-FL-AE-Clinical-TimeSeries
-## Differential Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction
+## Differentially Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction
 
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)  
-![DOI Placeholder](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXX.svg)
 
-This repository contains the full source code and analysis pipeline used for the paper:
+This repository contains the full codebase and experiment pipeline for the manuscript:
 
-**"Architectural Robustness of Differential Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction"**  
-Submitted to the International Journal of Medical Informatics (IJMI).
+> **"Federated Differentially Private Autoencoder for Multivariate Clinical Time-Series Reconstruction Using Real-World FHIR Data"**  
+> *Submitted to the International Journal of Medical Informatics (IJMI).*
 
-This project evaluates three Autoencoder architectures (Conv1D, BiLSTM, Transformer) under Differentially Private Federated Learning (DP-FL) using real clinical time-series data (MIMIC-IV) and converted into the FHIR standard.
+The project benchmarks three deep sequence Autoencoder architectures—**Conv1D-AE**, **BiLSTM-AE**, and **Transformer-AE**—within a **Differentially Private Federated Learning (DP-FL)** framework using real clinical time-series data derived from **MIMIC-IV** and transformed into the **FHIR** interoperability standard.
 
-Conv1D-AE is shown to be the most stable and utility-efficient under DP-FL.
+A key finding is that the **Conv1D-AE** demonstrates the highest stability and utility efficiency under strict DP-FL constraints, while BiLSTM-AE and Transformer-AE illustrate varying robustness to differential privacy noise.
 
 ---
 
-## 1. Reproducibility and Data Access
+# 1. Reproducibility and Data Access
 
-### MIMIC-IV Access Requirement
-The dataset used is MIMIC-IV v2.2, which cannot be shared.  
+## ⚠️ MIMIC-IV Requirement
+
+This project uses **MIMIC-IV v2.2**, which cannot be redistributed due to data-use agreements.  
 To reproduce experiments:
 
-1. Obtain credentialed access via PhysioNet.  
-2. Download MIMIC-IV locally.  
-3. Set the BASE_DIR variable in data/process_mimic.py.
+1. Request credentialed access from **PhysioNet**.  
+2. Download the MIMIC-IV dataset locally.  
+3. Set the dataset root path in `data/process_mimic.py`:
+
+```python
+BASE_DIR = "path/to/mimic-iv"
+```
 
 ### Random Seed
-All computations are fully reproducible using:
 
-```
+A fixed seed is applied throughout to ensure deterministic reproducibility:
+
+```python
 RANDOM_SEED = 42
 ```
 
 ---
 
-## 2. Repository Structure
+# 2. Repository Structure
+
+This repository is organized to clearly separate data processing, model definitions, federated learning logic, and the unified execution pipeline.
 
 ```
 DP-FL-AE-Clinical-TimeSeries/
 ├── config/
-│   └── optimized_config.json
+│   └── optimized_config.json          # Hyperparameters & experiment configuration
 │
 ├── data/
-│   ├── process_mimic.py
-│   └── fhir_to_sequence.py
+│   ├── process_mimic.py               # Raw MIMIC → FHIR transformation pipeline
+│   └── fhir_to_sequence.py            # FHIR → multivariate time-series conversion
 │
 ├── src/
-│   ├── models.py
-│   ├── fl_core.py
-│   └── utils.py
+│   ├── models.py                      # Conv1D-AE, BiLSTM-AE, Transformer-AE
+│   ├── fl_core.py                     # Federated averaging & DP-FL training logic
+│   └── utils.py                       # RDP accountant, plotting utilities
 │
-├── main_run.py
-├── requirements.txt
-└── README.md
+├── main_pipeline_combined.py          # ★ SINGLE EXECUTABLE ENTRYPOINT
+│                                      # (Runs Centralized → FL → DP-FL)
+│
+├── requirements.txt                   # Dependencies
+└── README.md                          # Documentation (this file)
 ```
+
+Files in `data/` and `src/` act as **structural documentation** and core program components.  
+The entire end-to-end workflow is wrapped into **main_pipeline_combined.py**, which reviewers can execute directly.
 
 ---
 
-## 3. Setup and Installation
+# 3. Installation
 
-Recommended: Conda environment.
+Recommended environment: **conda**
 
-```
+```bash
 conda create -n dp-fl-ae python=3.10
 conda activate dp-fl-ae
 pip install -r requirements.txt
 ```
 
-Key libraries: tensorflow, tensorflow-privacy, numpy, pandas, scikit-learn, matplotlib, seaborn, scipy.
+Key libraries include:
+
+- TensorFlow  
+- TensorFlow-Privacy  
+- NumPy / Pandas  
+- Scikit-learn  
+- Matplotlib / Seaborn  
+- SciPy  
 
 ---
 
-## 4. Running the Pipeline
+# 4. Running the Full Pipeline
 
-### Stage 1: Data Preparation
+### Step 1: Data Processing (MIMIC-IV → FHIR)
 
-Set MIMIC-IV root directory:
-
-Open data/process_mimic.py and edit:
-
-```
-BASE_DIR = "path/to/mimic-iv"
-```
-
-Then run:
-
-```
+```bash
 python data/process_mimic.py
-python data/fhir_to_sequence.py
 ```
 
-This converts raw MIMIC-IV to FHIR and then standardized sequences.
+These scripts convert raw MIMIC-IV tables into:
+- FHIR-compliant Observations  
 
 ---
 
-### Stage 2: DP-FL Experiments
+### Step 2: Execute All Experiments (FHIR → Sequences & Centralized, FL, DP-FL)
 
-Run:
+Run the single entrypoint script:
 
+```bash
+python main_pipeline_combined.py
 ```
-python main_run.py
-```
 
-This executes the full experiment suite (Centralized, FL, DP-FL).
+The script automatically performs:
 
-Privacy budget from RDP accountant:
+- Centralized AE training  
+- Federated Learning (FL)  
+- Differentially Private FL (DP-FL) via DP-SGD  
+- RDP privacy accounting  
+- Reconstruction evaluation & plotting  
+
+---
+
+### Privacy Budget (DP-SGD)
+
+Computed using the Rényi Differential Privacy (RDP) accountant:
 
 ```
 epsilon = 58.93
@@ -113,36 +131,46 @@ delta = 1e-5
 
 ---
 
-## 5. Output Files
+# 5. Output Files
 
-Generated in the results/ folder:
+All experiment outputs are saved in the `results/` directory.
 
 | File | Description |
 |------|-------------|
-| metrics_summary.csv | RMSE, MAE, performance ratios |
-| multi_model_rmse_comparison.png | RMSE comparison bar chart |
-| performance_ratio_plot.png | Utility degradation ratio |
-| fl_convergence_plot.png | Global loss over 50 rounds |
-| conv1d_sequence_reconstruction.png | Best model qualitative reconstruction |
+| metrics_summary.csv | RMSE, MAE, and performance ratios for all models |
+| multi_model_rmse_comparison.png | Centralized vs FL vs DP-FL RMSE comparison |
+| performance_ratio_plot.png | Utility degradation ratios across architectures |
+| fl_convergence_plot.png | Global federated loss vs rounds |
+| conv1d_sequence_reconstruction.png | Example reconstruction from the best model |
+| Additional per-model reconstructions | Generated automatically |
 
 ---
 
-## 6. Citation
+# 6. Citation
 
-```
+If you use this work, please cite both the paper and the code:
+
+### Paper
+
+```bibtex
 @article{YOUR_PAPER,
-  title={Architectural Robustness of Differential Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction},
+  title={Differentially Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction},
   author={Your Name},
   journal={International Journal of Medical Informatics},
   year={2025}
 }
 ```
 
-```
+### Code
+
+```bibtex
 @software{DP_FL_AE_Repo,
   author       = {Your Name},
   title        = {DP-FL-AE-Clinical-TimeSeries},
   doi          = {10.5281/zenodo.XXXXXX},
-  url          = {https://doi.org/10.5281/zenodo.XXXXXX}
+  url          = {https://doi.org/10.5281/zenodo.XXXXXX},
+  year         = 2025
 }
 ```
+
+---
