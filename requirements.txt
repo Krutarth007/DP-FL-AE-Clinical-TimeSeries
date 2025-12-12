@@ -1,0 +1,16 @@
+# Python environment dependencies for the DP-FL-AE project.
+# Developed and tested primarily on Python 3.10 with TensorFlow 2.x.
+
+# Core Machine Learning Frameworks
+tensorflow>=2.10.0
+tensorflow-privacy>=0.8.0  # Crucial for DP-SGD implementation
+scikit-learn>=1.0.0
+
+# Data Manipulation and Numerics
+numpy>=1.22.0
+pandas>=1.4.0
+scipy>=1.8.0
+
+# Visualization (used for generating all publication figures)
+matplotlib>=3.5.0
+seaborn>=0.11.2
