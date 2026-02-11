@@ -4,8 +4,8 @@
 
 This repository contains the full codebase and experiment pipeline for the manuscript:
 
-> **"Benchmarking Differentially Private Federated Learning for Time-Series Reconstruction: Comparative Evaluation of Autoencoder Models on Real-World FHIR-Standardized EHR Data"**  
-> *Submitted to the Health Information Science and Systems (HISS).*
+> **"A FHIR-Standardized Federated Framework for Privacy-Preserving and Interoperable Clinical Time-Series Reconstruction"**  
+> *Submitted to the Health and Technology (Springer).*
 
 The project benchmarks three deep sequence Autoencoder architectures—**Conv1D-AE**, **BiLSTM-AE**, and **Transformer-AE**—within a **Differentially Private Federated Learning (DP-FL)** framework using real clinical time-series data derived from **MIMIC-IV** and transformed into the **FHIR** interoperability standard.
 
@@ -155,7 +155,7 @@ If you use this work, please cite both the paper and the code:
 @article{YOUR_PAPER,
   title={Differentially Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction},
   author={Your Name},
-  journal={Health Information Science and Systems},
+  journal={Health and Technology},
   year={2025}
 }
 ```
