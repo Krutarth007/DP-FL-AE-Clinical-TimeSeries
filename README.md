@@ -4,8 +4,8 @@
 
 This repository contains the full codebase and experiment pipeline for the manuscript:
 
-> **"A FHIR-Standardized Federated Framework for Privacy-Preserving and Interoperable Clinical Time-Series Reconstruction"**  
-> *Submitted to the Health and Technology (Springer).*
+> **"A Privacy-Preserving Federated Deep Learning Framework for Clinical Time-Series Reconstruction over FHIR-Standardized Data"**  
+> *Submitted to the Journal of Supercomputing (Springer).*
 
 The project benchmarks three deep sequence Autoencoder architectures—**Conv1D-AE**, **BiLSTM-AE**, and **Transformer-AE**—within a **Differentially Private Federated Learning (DP-FL)** framework using real clinical time-series data derived from **MIMIC-IV** and transformed into the **FHIR** interoperability standard.
 
@@ -140,7 +140,7 @@ All experiment outputs are saved in the `results/` directory.
 | multi_model_rmse_comparison.png | Bar chart comparing Centralized vs FL vs DP-FL RMSE. |
 | performance_ratio_plot.png | Utility degradation ratios across architectures |
 | fl_convergence_plot.png | Global federated loss vs rounds |
-| conv1d_sequence_reconstruction.png | Qualitative reconstruction plot from the best $\text{DP-FL}$ model (Conv1D-AE) |
+| conv1d_sequence_reconstruction.png | Qualitative reconstruction plot from the best DP-FL model (Conv1D-AE) |
 | conv1d_residual_distribution.png | Histogram showing the distribution of reconstruction errors (residuals) |
 
 ---
@@ -153,9 +153,9 @@ If you use this work, please cite both the paper and the code:
 
 ```bibtex
 @article{YOUR_PAPER,
-  title={Differentially Private Federated Autoencoders for FHIR-Compliant Clinical Time-Series Reconstruction},
+  title={A Privacy-Preserving Federated Deep Learning Framework for Clinical Time-Series Reconstruction over FHIR-Standardized Data},
   author={Your Name},
-  journal={Health and Technology},
+  journal={The Journal of Supercomputing},
   year={2025}
 }
 ```
